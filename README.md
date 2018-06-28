@@ -11,4 +11,4 @@ These scripts are quite minor, by comparison; you can use the scripts to make a 
 * *wine-shell:* Uses the screen program to launch a shell with $WINEPREFIX set.
 * *wine-term:* Uses the xterm program to launch an xterm with $WINEPREFIX set.
 
-All new prefixes are made in ~/.wineprefix.
+All new prefixes are made in ~/.wineprefix.  While in the wine-shell or wine-term, all wine commands (wine, wine-staging, msiexec, winecfg, winetricks) will use the prefix, rather than the default wine session.
