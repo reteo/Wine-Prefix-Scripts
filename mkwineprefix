@@ -1,0 +1,107 @@
+#!/usr/bin/python
+
+# This script creates a fresh Wine prefix using vanilla wine; no special scripts like in
+# PlayOnLinux.
+
+import os
+import sys
+import subprocess
+
+# Initialization Variables:
+
+home = os.path.expanduser("~")
+prefixDir = home + "/.wineprefix"
+
+
+# Returns a list of existing prefixes.
+def prefixDirs():
+    prefixes = next(os.walk(prefixDir))[1]
+    return(prefixes)
+
+# Checks to see if the desired prefix exists.
+def isExisting(prefix):
+    # First, if ~/.wineprefix doesn't exist, then it's an automatic false.
+    if not os.path.exists(prefixDir):
+        return False
+
+    # Now for checks.  
+    valid = 0
+    for option in prefixDirs():
+        filename = prefixDir + "/" + option + "/" + "system.reg"
+        
+        # We're going to see if the wineprefix directory exists.
+        if prefix == option:
+            # Then, we're going to see if "system.reg" is present.
+            if os.path.isfile(filename):
+                valid = 1
+
+    # After these checks, if "valid" has been set to "1", then there is a match.
+    if valid == 1:
+        return True
+    else:
+        return False
+
+# Now, we want something to show all installed prefixes.
+def showExistingPrefixes():
+    print("These prefixes are currently installed:")
+    totalDirs = 0
+    
+    prefixDirectories = prefixDirs()
+    
+    for i in range(0, len(prefixDirectories)):
+        if isExisting(prefixDirectories[i]):
+            totalDirs += 1
+            print("* " + prefixDirectories[i] + " (" + prefixDir + "/" + prefixDirectories[i] + ")")
+
+    if totalDirs == 0:
+        print("* No prefixes are currently installed.")
+
+# Argument bounds checking is important. We want either no arguments (usage and existing prefix
+# list) or one argument (make a new prefix).  If we want a batch process, we can use a do loop.
+# NOTE: the command is always one argument, so "1" means no arguments, while "2" means one
+# argument.
+
+def noArguments():
+    if len(sys.argv) == 1:
+        return True
+    else:
+        return False
+
+def oneArgument():
+    if len(sys.argv) == 2:
+        return True
+    else:
+        return False
+
+# Once all checking is complete, we still need to actually make the directory and set up Wine.
+
+# This checks if the directory exists, and if not, makes it.
+def createDirectory(pathname):
+    if not os.path.exists(pathname):
+        os.makedirs(pathname)
+
+def makeWinePrefix(pathname):
+    os.environ['WINEPREFIX'] = pathname
+    subprocess.call(["wineboot"])
+
+##### Main Loop #####
+
+## First, we do command bounds checking.
+
+# The first thing we check: make sure there is a maximum of one option.
+if (not noArguments()) and (not oneArgument()):
+    print (os.path.basename(sys.argv[0]) + " cannot take more than one argument (the name of the prefix)")
+
+if (noArguments()):
+    print("Usage:   " + os.path.basename(sys.argv[0]) + " <name of prefix>\n")
+    showExistingPrefixes()
+
+if (oneArgument()):
+    prefixPath = prefixDir + "/" + sys.argv[1]
+    
+    if isExisting(sys.argv[1]):
+        print("The prefix already exists.  Remove it before making a new one.")
+    else:
+        createDirectory(prefixPath)
+        makeWinePrefix(prefixPath)
+        print("The \"" + sys.argv[1] + "\" prefix has been created.")
