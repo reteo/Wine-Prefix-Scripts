@@ -8,7 +8,7 @@ These scripts are quite minor, by comparison; you can use the scripts to make a 
 
 * *mkwineprefix:* Create a wine prefix using all default settings.
 * *mkwine32prefix:* If run from a 64-bit system, this will force the prefix to be 32-bit.
-* *wine-prefix:* Uses the screen program to launch a shell with $WINEPREFIX set.
-* *wine-shell:* Uses the xterm program to launch an xterm with $WINEPREFIX set.
+* *wine-shell:* Uses the screen program to launch a shell with $WINEPREFIX set.
+* *wine-term:* Uses the xterm program to launch an xterm with $WINEPREFIX set.
 
 All new prefixes are made in ~/.wineprefix.

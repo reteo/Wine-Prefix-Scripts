@@ -15,7 +15,7 @@ prefixDir = home + "/.wineprefix"
 # Returns a list of existing prefixes.
 def prefixDirs():
     prefixes = next(os.walk(prefixDir))[1]
-    return(prefixes)
+    return(sorted(prefixes))
 
 # Checks to see if the desired prefix exists.
 def isExisting(prefix):
@@ -90,4 +90,4 @@ if oneArgument():
         showExistingPrefixes()
     else:
         os.environ['WINEPREFIX'] = prefixDir + "/" + sys.argv[1]
-        subprocess.call('cd ' + prefixDir + '/' + sys.argv[1] + '; xterm', shell=True)
+        subprocess.call('cd ' + prefixDir + '/' + sys.argv[1] + '; screen ', shell=True)
