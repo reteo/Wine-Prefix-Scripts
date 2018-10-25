@@ -84,6 +84,10 @@ def makeWinePrefix(pathname):
     os.environ['WINEPREFIX'] = pathname
     subprocess.call(["wineboot"])
 
+def makeLauncher(pathname):
+    launchFile = open(pathname + "/launch.sh","w+")
+    launchFile.write("#!/bin/bash\n\nWINEPREFIX=" + pathname + "\n\n# Wine Executable after this line.")
+
 ##### Main Loop #####
 
 ## First, we do command bounds checking.
@@ -104,4 +108,5 @@ if (oneArgument()):
     else:
         createDirectory(prefixPath)
         makeWinePrefix(prefixPath)
+        makeLauncher(prefixPath)
         print("The \"" + sys.argv[1] + "\" prefix has been created.")
