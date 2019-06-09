@@ -87,7 +87,26 @@ def makeWinePrefix(pathname):
 
 def makeLauncher(pathname):
     launchFile = open(pathname + "/launch.sh","w+")
-    launchFile.write("#!/bin/bash\n\nexport WINEPREFIX=" + pathname + "\n\n# Wine Executable after this line.")
+    launchFile.write("#!/bin/bash\n\n" + \
+      "export WINEPREFIX=" + pathname + "\n\n" + \
+      "case \"$1\" in\n" + \
+      "\"setup\")\n" + \
+      "  echo \"Launching Program Setup\"\n" + \
+      "  # Insert setup executable here.\n" + \
+      "  ;;\n" + \
+      "\"winetricks\")\n" + \
+      "  echo \"Launching Wine Tricks\"\n" + \
+      "  winetricks ${@}\n" + \
+      "  ;;\n" + \
+      "\"winecfg\")\n" + \
+      "  echo \"Launching Wine Configuration\"\n" + \
+      "  winecfg\n" + \
+      "  ;;\n" + \
+      "*)\n" + \
+      "  echo \"Launching Program\"\n" + \
+      "  # Insert main executable here.\n" + \
+      "  ;;\n" + \
+      "esac")
 
 ##### Main Loop #####
 
